@@ -3,7 +3,7 @@
 	"id": "swapbar",
 	"version": "${version}",
 	"name": "swapbar",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Swap your hotbar with the other rows in your inventory!",
 	"authors": [
 		"zandgall"
 	],
@@ -24,9 +24,9 @@
 	},
 	"mixins": [],
 	"depends": {
-		"fabricloader": ">=0.15.9",
-		"minecraft": "~1.20.4",
-		"java": ">=17",
+		"fabricloader": ">=0.19.2",
+		"minecraft": "~26.1",
+		"java": ">=25",
 		"fabric-api": "*"
 	},
 	"suggests": {}

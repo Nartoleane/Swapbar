@@ -1,47 +1,49 @@
 package com.zandgall.swapbar;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.util.Identifier;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.resources.Identifier;
 
 public class Swapbar implements ClientModInitializer {
-	public static KeyBinding switchKey;
-	private static KeyBinding createKeyBinding(Identifier id, InputUtil.Type type, int code, String category) {
-		return KeyBindingHelper.registerKeyBinding(new KeyBinding("key." + id.getNamespace() + "." + id.getPath(), type, code, category));
-	}
+	public static KeyMapping switchKey;
 
-	private static PlayerInventory inventory;
+	private static Inventory inventory;
 
 	@Override
 	public void onInitializeClient() {
-		switchKey = createKeyBinding(
-				new Identifier("swapbar", "swap"), InputUtil.Type.KEYSYM, 82, "key.swapbar.category");
+
+		KeyMapping.Category CATEGORY = KeyMapping.Category.register(
+			Identifier.fromNamespaceAndPath("swapbar", "category")
+		);
+
+		switchKey = KeyMappingHelper.registerKeyMapping(
+				new KeyMapping("swapbar.swap", InputConstants.Type.KEYSYM, 82, CATEGORY)
+			);
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			ClientPlayerEntity player = MinecraftClient.getInstance().player;
-			if (player != null) {
-				inventory = player.getInventory();
-				if (inventory != null && Swapbar.switchKey.wasPressed()) {
+			LocalPlayer player = Minecraft.getInstance().player;
+			while (Swapbar.switchKey.consumeClick()) {
+				if (player != null && player.getInventory() != null) {
+					inventory = player.getInventory();
 					for(int i = 0; i < 9; i++) {
 						int top = i + 9;
 						int mid = top + 9;
 						int bot = mid + 9;
-						if(Screen.hasAltDown()) {
-							MinecraftClient.getInstance().interactionManager.clickSlot(0, bot, i, SlotActionType.SWAP, player);
+						if(InputConstants.isKeyDown(Minecraft.getInstance().getWindow(), InputConstants.KEY_LALT)) {
+							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, bot, i, ContainerInput.SWAP, player);
 
-							MinecraftClient.getInstance().interactionManager.clickSlot(0, mid, i, SlotActionType.SWAP, player);
-							MinecraftClient.getInstance().interactionManager.clickSlot(0, top, i, SlotActionType.SWAP, player);
+							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, mid, i, ContainerInput.SWAP, player);
+							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, top, i, ContainerInput.SWAP, player);
 						} else {
-							MinecraftClient.getInstance().interactionManager.clickSlot(0, top, i, SlotActionType.SWAP, player);
-							MinecraftClient.getInstance().interactionManager.clickSlot(0, mid, i, SlotActionType.SWAP, player);
-							MinecraftClient.getInstance().interactionManager.clickSlot(0, bot, i, SlotActionType.SWAP, player);
+							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, top, i, ContainerInput.SWAP, player);
+							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, mid, i, ContainerInput.SWAP, player);
+							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, bot, i, ContainerInput.SWAP, player);
 						}
 					}
 				}
