@@ -36,7 +36,14 @@ public class Swapbar implements ClientModInitializer {
 		                int mid = top + 9;
 		                int bot = mid + 9;
 		                if(InputConstants.isKeyDown(InputConstants.KEY_LALT)) {
-		                    // rest of your code...
+		                    Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, bot, i, ContainerInput.SWAP, player);
+
+							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, mid, i, ContainerInput.SWAP, player);
+							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, top, i, ContainerInput.SWAP, player);
+						} else {
+							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, top, i, ContainerInput.SWAP, player);
+							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, mid, i, ContainerInput.SWAP, player);
+							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, bot, i, ContainerInput.SWAP, player);
 		                }
 		            }
 		        }
