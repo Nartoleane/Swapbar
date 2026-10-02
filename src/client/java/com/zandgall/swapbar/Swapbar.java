@@ -24,30 +24,23 @@ public class Swapbar implements ClientModInitializer {
 		);
 
 		switchKey = KeyMappingHelper.registerKeyMapping(
-				new KeyMapping("swapbar.swap", InputConstants.Type.KEYSYM, InputConstants.KEY_R, CATEGORY)
-			);
+		    new KeyMapping("swapbar.swap", InputConstants.Type.KEYSYM, InputConstants.KEY_R, CATEGORY)
+		);
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			LocalPlayer player = Minecraft.getInstance().player;
-			while (Swapbar.switchKey.consumeClick()) {
-				if (player != null && player.getInventory() != null) {
-					inventory = player.getInventory();
-					for(int i = 0; i < 9; i++) {
-						int top = i + 9;
-						int mid = top + 9;
-						int bot = mid + 9;
-						if(InputConstants.isKeyDown(InputConstants.KEY_LALT)) {
-							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, bot, i, ContainerInput.SWAP, player);
-
-							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, mid, i, ContainerInput.SWAP, player);
-							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, top, i, ContainerInput.SWAP, player);
-						} else {
-							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, top, i, ContainerInput.SWAP, player);
-							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, mid, i, ContainerInput.SWAP, player);
-							Minecraft.getInstance().gameMode.handleContainerInput(player.containerMenu.containerId, bot, i, ContainerInput.SWAP, player);
-						}
-					}
-				}
-			}
+		    LocalPlayer player = Minecraft.getInstance().player;
+		    while (Swapbar.switchKey.consumeClick()) {
+		        if (player != null && player.getInventory() != null) {
+		            inventory = player.getInventory();
+		            for(int i = 0; i < 9; i++) {
+		                int top = i + 9;
+		                int mid = top + 9;
+		                int bot = mid + 9;
+		                if(InputConstants.isKeyDown(InputConstants.KEY_LALT)) {
+		                    // rest of your code...
+		                }
+		            }
+		        }
+		    }
 		});
 	}
 }
