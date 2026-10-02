@@ -24,7 +24,7 @@ public class Swapbar implements ClientModInitializer {
 		);
 
 		switchKey = KeyMappingHelper.registerKeyMapping(
-				new KeyMapping("swapbar.swap", InputConstants.Type.KEYSYM, 82, CATEGORY)
+				new KeyMapping("swapbar.swap", InputConstants.Type.KEYSYM, InputConstants.KEY_R, CATEGORY)
 			);
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			LocalPlayer player = Minecraft.getInstance().player;
